@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35931.197 d17.13
+VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaCadastroSisandAPI", "SistemaCadastroSisand\SistemaCadastroSisandAPI.csproj", "{5ADA18B9-D67A-4AEE-9130-68C117805C50}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{8B94EFB6-C125-4A80-B413-036021CC9863}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{26D7B3A8-2513-4D0B-982D-978C9233F239}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaCadastroSisandApi.Tests", "SistemaCadastroSisandApi.Tests\SistemaCadastroSisandApi.Tests.csproj", "{0ACF99B7-B506-4529-B131-D2EBD6B3E7FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{26D7B3A8-2513-4D0B-982D-978C9233F239}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26D7B3A8-2513-4D0B-982D-978C9233F239}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26D7B3A8-2513-4D0B-982D-978C9233F239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ACF99B7-B506-4529-B131-D2EBD6B3E7FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ACF99B7-B506-4529-B131-D2EBD6B3E7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ACF99B7-B506-4529-B131-D2EBD6B3E7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ACF99B7-B506-4529-B131-D2EBD6B3E7FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,0 @@
-@SistemaCadastroSisand_HostAddress = http://localhost:5279
-
-GET {{SistemaCadastroSisand_HostAddress}}/
-Accept: application/json
-
-###
