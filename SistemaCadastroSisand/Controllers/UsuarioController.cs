@@ -15,9 +15,8 @@ namespace SistemaCadastroSisandAPI.Controllers
             _usuarioService = usuarioService;
         }
 
-
         [HttpGet]
-        [Authorize(Policy = "Administrador")]
+        [Authorize(Policy = "UsuarioPadrao")]
         public IActionResult Get()
         {
             try
@@ -31,8 +30,8 @@ namespace SistemaCadastroSisandAPI.Controllers
             }
         }
 
-        [HttpGet("/UsuarioPorId/{id:int}")]
-        [Authorize(Policy = "Administrador")]
+        [HttpGet("UsuarioPorId/{id:int}")]
+        [Authorize(Policy = "UsuarioPadrao")]
         public IActionResult GetUsuarioPorId([FromRoute] int id)
         {
             try
@@ -46,8 +45,8 @@ namespace SistemaCadastroSisandAPI.Controllers
             }
         }
 
-        [HttpGet("/UsuarioPorNome/{nome}")]
-        [Authorize(Policy = "Administrador")]
+        [HttpGet("UsuarioPorNome/{nome}")]
+        [Authorize(Policy = "UsuarioPadrao")]
         public IActionResult GetUsuarioPorNome([FromRoute] string nome)
         {
             try
@@ -61,20 +60,29 @@ namespace SistemaCadastroSisandAPI.Controllers
             }
         }
 
-        [HttpPost("/UsuarioPadrao")]
+        [HttpPost("UsuarioPadrao")]
+        [AllowAnonymous]
         public IActionResult PostUsuarioPadrao([FromBody] UsuarioCadastroInput input)
         {
             try
             {
-                _usuarioService.CadastrarUsuarioPadrao(input);
-                return Ok();
+                var usuarioJaExiste = _usuarioService.ObterUsuarioDtoPorNome(input.Nome);
+                if (usuarioJaExiste.Nome != null && usuarioJaExiste.Nome != "")
+                {
+                    return BadRequest("Usuario ja esta cadastrado");
+                }
+                else
+                {
+                    _usuarioService.CadastrarUsuarioPadrao(input);
+                    return Ok();
+                }
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("/UsuarioAdministrador")]
+        [HttpPost("UsuarioAdministrador")]
         [Authorize(Policy = "Administrador")]
         public IActionResult PostUsuarioAdministrador([FromBody] UsuarioCadastroInput input)
         {

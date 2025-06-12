@@ -28,6 +28,9 @@ namespace Application.Validations.DataAnnotations
             if (!Regex.IsMatch(senha, @"[\W_]"))
                 return new ValidationResult("A senha deve conter ao menos um caractere especial.");
 
+            if (senha.Length > 20)
+                return new ValidationResult("A senha deve ter no maximo 20 caracteres.");
+
             return ValidationResult.Success;
         }
     }

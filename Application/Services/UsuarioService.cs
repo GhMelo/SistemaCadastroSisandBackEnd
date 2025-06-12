@@ -90,13 +90,15 @@ namespace Application.Services
             var usuario = _usuarioRepository.obterPorNome(nome);
             var usuarioDto = new UsuarioDto();
 
-            usuarioDto.Id = usuario.Id;
-            usuarioDto.DataCriacao = usuario.DataCriacao;
-            usuarioDto.Tipo = (TipoUsuarioDto)usuario.Tipo;
-            usuarioDto.Nome = usuario.Nome;
-            usuarioDto.Email = usuario.Email;
-            usuarioDto.Senha = usuario.Senha;
-            
+            if(usuario != null)
+            {
+                usuarioDto.Id = usuario.Id;
+                usuarioDto.DataCriacao = usuario.DataCriacao;
+                usuarioDto.Tipo = (TipoUsuarioDto)usuario.Tipo;
+                usuarioDto.Nome = usuario.Nome;
+                usuarioDto.Email = usuario.Email;
+                usuarioDto.Senha = usuario.Senha;
+            }
 
             return usuarioDto;
         }
