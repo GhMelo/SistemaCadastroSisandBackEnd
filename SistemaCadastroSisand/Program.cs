@@ -1,17 +1,22 @@
 using System.Text;
 using Application.Interfaces.IService;
 using Application.Services;
+using Domain.Entity;
 using Domain.Interfaces.IRepository;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SistemaCadastroSisandAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Carregar configuração externa
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
+
+#region Configuração de CORS
 
 builder.Services.AddCors(options =>
 {
@@ -24,6 +29,10 @@ builder.Services.AddCors(options =>
                   .AllowCredentials();
         });
 });
+
+#endregion
+
+#region Configuração de Autenticação e Autorização
 
 builder.Services.AddAuthentication(options =>
 {
@@ -51,8 +60,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("UsuarioPadrao", policy => policy.RequireRole("UsuarioPadrao", "Administrador"));
 });
 
-builder.Services.AddControllers();
+#endregion
 
+#region Configuração dos Controllers e Swagger
+
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
@@ -87,16 +99,36 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+#endregion
+
+#region Configuração do MongoDB
+
+builder.Services.Configure<MongoSettings>(
+    builder.Configuration.GetSection("MongoSettings"));
+
+#endregion
+
+#region Configuração do Entity Framework e Banco de Dados
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(configuration.GetConnectionString("ConnectionString"));
     options.UseLazyLoadingProxies();
 }, ServiceLifetime.Scoped);
 
+#endregion
+
+#region Registro de Repositórios e Serviços
+
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+#endregion
+
+#region Configuração do Pipeline HTTP
 
 var app = builder.Build();
 
@@ -106,13 +138,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseMiddleware<DatabaseLoggingMiddleware>();
+
 app.UseHttpsRedirection();
-
 app.UseCors("AllowAngularApp");
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
 app.Run();
+
+#endregion
